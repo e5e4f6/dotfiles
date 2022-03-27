@@ -1,0 +1,79 @@
+# -*-mode:gitconfig-*- vim:ft=gitconfig
+# -*-mode:ini-*- vim:ft=gitconfig
+
+# ~/.gitinclude
+# =============================================================================
+# User-specific Git configuration file.
+#
+# See https://git-scm.com/docs/git-config
+#
+# {{- /* This file supports Go's text/template language. */ -}}
+#
+# Sources:
+#     https://delicious-insights.com/en/posts/mastering-git-submodules/
+#     https://github.com/haacked/dotfiles
+#     https://github.com/holman/dotfiles
+#     https://github.com/jayharris/dotfiles-windows
+#     https://github.com/mathiasbynens/dotfiles
+#     https://git-scm.com/docs/git-config/
+
+[alias]
+    br                = branch
+    ci                = commit
+    co                = checkout
+    co-ours           = checkout --ours
+    co-theirs         = checkout --theirs
+    coi               = checkout-index
+    coi-ours          = checkout-index -f -a --stage=2
+    coi-theirs        = checkout-index -f -a --stage=3
+    cp                = cherry-pick
+    df                = diff --color=never
+    ds                = diff --stat --color=never
+    ds                = diff --staged --color=never
+    g                 = grep --break --heading --line-number
+    last              = log --graph --pretty=format':%C(yellow)%h%Cblue%d%Creset %s %C(white)%an, %ar%Creset' -n 20
+    lc                = log ORIG_HEAD.. --stat --no-merges
+    lp                = log --patch --pretty=format':%C(yellow)%h%Cblue%d%Creset %s %C(white)%an, %ar%Creset'
+    ls                = log --stat --pretty=format':%C(yellow)%h%Cblue%d%Creset %s %C(white)%an, %ar%Creset'
+    mt                = mergetool -y
+    pu                = pull
+    pul               = pull
+    pus               = push
+    rb                = rebase
+    rbc               = rebase --continue
+    rbs               = rebase --skip
+    rl                = reflog
+    rp                = remote prune
+    rs                = remote show
+    rt                = remote
+    ru                = remote update
+    sb                = show-branch
+    st                = status -s
+    push-all          = push --follow-tags
+    pa                = push-all
+
+    catchup           = log --patch --reverse --topo-order _ribbon..origin/main
+    changes           = diff --name-status -r
+    delete-merged     = !git pull --prune && git branch --merged | grep -v '*' | xargs -n 1 git branch -d
+    diffall           = diff HEAD --color=never
+    diffstat          = diff --stat --color=never
+    fetch-all         = fetch --depth=999999999
+    forget            = rm --cached
+    lg                = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
+    merge-ours        = !git checkout --ours   . && git add -u && git commit
+    merge-theirs      = !git checkout --theirs . && git add -u && git commit
+    pop               = stash pop
+    push-new          = !git push -u origin `git rev-parse --abbrev-ref HEAD`
+    reset-origin      = !git fetch && git reset --hard "origin/`git rev-parse --abbrev-ref HEAD`"
+    ribbon            = tag --force _ribbon origin/main
+    root              = !pwd
+    serve             = daemon --reuseaddr --verbose  --base-path=. --export-all ./.git
+    stage             = add
+    staged            = diff --staged
+    tags              = tag -l
+    track             = checkout -t
+    undo              = reset --soft HEAD^
+    unstage           = reset HEAD
+    unstaged          = diff
+    unstash           = stash apply
+    who               = shortlog -s --

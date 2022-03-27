@@ -1,0 +1,73 @@
+# -*-mode:gitconfig-*- vim:ft=gitconfig
+# -*-mode:ini-*- vim:ft=gitconfig
+
+# ~/.gitconfig
+# =============================================================================
+# User-specific Git configuration file.
+#
+# See https://git-scm.com/docs/git-config
+#
+# {{- /* This file supports Go's text/template language. */ -}}
+#
+# Sources:
+#     https://delicious-insights.com/en/posts/mastering-git-submodules/
+#     https://github.com/haacked/dotfiles
+#     https://github.com/holman/dotfiles
+#     https://github.com/jayharris/dotfiles-windows
+#     https://github.com/mathiasbynens/dotfiles
+#     https://git-scm.com/docs/git-config/
+
+[core]
+    sshcommand = "plink -agent"
+
+[user]
+    name = {{ .name | quote }}
+    email = {{ .email | quote }}
+    signingkey = {{ .gpgkey | quote }}
+    useConfigOnly = true
+
+[init]
+    defaultBranch = main
+
+[fetch]
+    prune = true
+
+[color "diff"]
+    meta = yellow
+    frag = magenta bold
+    commit = yellow bold
+    old = red bold
+    new = green bold
+    whitespace = red reverse
+
+[commit]
+    gpgsign = true
+
+[tag]
+    forceSignAnnotated = true
+    gpgSign = true
+
+[credential]
+    helper = cache --timeout=3600
+
+[color]
+    ui = true
+
+[include]
+    path = {{ mustRegexReplaceAll `\\` .chezmoi.homeDir `\\` }}\\.gitinclude
+
+[help]
+    autocorrect = 20
+
+[diff "gpg"]
+    textconv = gpg --no-tty --decrypt
+
+[gpg]
+{{ if eq .chezmoi.os "windows" -}}
+    program = gpg.exe
+{{ else }}
+    program = gpg2
+{{- end }}
+
+[pull]
+    ff = only
