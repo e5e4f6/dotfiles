@@ -91,3 +91,22 @@ function Add-EnvPath {
         }
     }
 }
+
+function Reset-Git { git reset --hard; git clean -df; }
+
+function Use-ScoopGpg {
+    Invoke-Expression -Command $(scoop which gpg) -PipelineVariable
+}
+
+function Use-ChezmoiGit {
+    [CmdletBinding(PositionalBinding=$False)]
+    param (
+        [Parameter(ValueFromRemainingArguments=$True)]
+        [string[]]
+        $Remaining
+    )
+
+    process {
+        chezmoi.exe git -- @Remaining
+    }
+}

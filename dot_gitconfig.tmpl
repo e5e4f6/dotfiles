@@ -63,11 +63,7 @@
     textconv = gpg --no-tty --decrypt
 
 [gpg]
-{{ if eq .chezmoi.os "windows" -}}
-    program = gpg.exe
-{{ else }}
-    program = gpg2
-{{- end }}
+    program = {{ output "scoop" "which" "gpg" | trim | splitList `\` | join `\\` }}
 
 [pull]
     ff = only

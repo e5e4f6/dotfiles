@@ -19,15 +19,12 @@ if (Test-Path $ProfilePath/functions.ps1) {
     . $ProfilePath/functions.ps1
 }
 
+Import-Module DirColors
+
 if (Test-Path "$env:AppData\gnupg") {
     $env:GNUPGHOME = "$env:AppData\gnupg"
     [System.Environment]::SetEnvironmentVariable('GNUPGHOME', $env:GNUPGHOME)
 }
-
-$gpgcommand = Invoke-Command -ScriptBlock {
-    scoop which gpg
-}
-git config --global gpg.program "$gpgcommand"
 
 # Add missing user paths.
 # if (Get-Command Add-EnvPath -errorAction Ignore) {
@@ -44,5 +41,7 @@ git config --global gpg.program "$gpgcommand"
 if (Test-Path $ProfilePath/aliases.ps1) {
     . $ProfilePath/aliases.ps1
 }
+
+$env:STARSHIP_CONFIG = "$HOME\.starship\config.toml"
 
 Invoke-Expression (&starship init powershell)

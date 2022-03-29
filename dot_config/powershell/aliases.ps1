@@ -30,9 +30,14 @@ Set-Alias -Name "alias" -Value Get-Aliases -Description "Lists aliases."
 
 if (Get-Command "chezmoi" -ErrorAction "Ignore") {
     Set-Alias -Name "cz" -Value chezmoi
-    Set-Alias -Name "czg" -Value 'chezmoi git'
+    Set-Alias -Name "czg" -Value Use-ChezmoiGit
 }
 
 if (Get-Command "git" -ErrorAction "Ignore") {
     Set-Alias -Name "g" -Value git
+    Set-Alias -Name "nah" -Value Reset-Git
+}
+
+if (Get-Command "nvim" -ErrorAction "Ignore") {
+    Set-Alias -Name "vim" -Value nvim
 }

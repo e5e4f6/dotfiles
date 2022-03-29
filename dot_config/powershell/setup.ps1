@@ -76,6 +76,44 @@ else {
     $count++
 }
 
+$AllowPrerelease = ($null -ne (Get-Command Install-Module -Syntax | Select-String "AllowPrerelease"))
+
+# Install or update Powershell modules.
+$modules = @{
+    "DirColors" = @{
+        Info = "colorize filenames and directories";
+        Repo = "https://github.com/DHowett/DirColors";
+        Install = $true;
+        Force = $true;
+        Prerelease = $false;
+        IsCoreCLR = $false;
+        AllowClobber = $false;
+        SkipPublisherCheck = $true;
+    };
+}
+
+($modules.GetEnumerator() | Sort-Object -Property name) | ForEach-Object {
+    if (!$_.Value.Install -or (!$IsCoreCLR -and $_.Value.IsCoreCLR)) {
+        continue
+    }
+
+    if (Get-Module -ListAvailable -Name $_.Name -ErrorAction "Ignore") {
+        Write-Host "Checking for $($_.Name) updates ($($_.Value.Info))..." -ForegroundColor $ColorInfo
+        Update-Module $_.Name
+    }
+    else {
+        Write-Host "Installing $($_.Name) ($($_.Value.Info))..." -ForegroundColor $ColorInfo
+        if ($AllowPrerelease -and $_.Value.Prerelease) {
+            Install-Module $_.Name -Scope CurrentUser -Force:$_.Value.Force -SkipPublisherCheck:$_.Value.SkipPublisherCheck -AllowClobber:$_.Value.AllowClobber -AllowPrerelease:$_.Value.Prerelease
+        }
+        else {
+            Install-Module $_.Name -Scope CurrentUser -Force:$_.Value.Force -SkipPublisherCheck:$_.Value.SkipPublisherCheck -AllowClobber:$_.Value.AllowClobber
+        }
+        Get-Module -ListAvailable -Name $_.Name
+        $count++
+    }
+}
+
 # Setup Scoop.
 # See https://github.com/lukesampson/scoop
 if ($IsWindows) {
