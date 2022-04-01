@@ -1,0 +1,28 @@
+{{ if eq .chezmoi.os "windows" -}}
+:: -*-mode:bat-*- vim:ft=bat
+
+:: ~/.local/share/chezmoi/run_once_setup.bat
+:: ============================================================================
+:: Runs once after `chezmoi apply` to set up the environment.
+::
+:: This batch file runs once on Windows to install depdendencies and set up.
+:: on Windows. Chezmoi will skip this script on other operating systems.
+:: See https://www.chezmoi.io/docs/how-to/
+::
+:: {{- /* This file supports Go's text/template language. */}}
+
+@echo off
+setlocal ENABLEDELAYEDEXPANSION
+
+:: Setup action process levels.
+set processlevelverify=0
+set processlevelskip=1
+set processlevelcompare=2
+set processlevelcopy=3
+
+:: Get the correct Documents folder
+for /f %%i in ('powershell -C "[Environment]::GetFolderPath([Environment+SpecialFolder]::MyDocuments)"') do set DOCFOLDER=%%i
+
+pwsh -NoProfile -NoLogo  "%USERPROFILE%\.config\powershell\setup.ps1"
+
+{{- end }}

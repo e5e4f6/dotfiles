@@ -45,7 +45,7 @@ function eos {
 
 # Ask for confirmation.
 $hereString = "
-    This script will perform the following non-destructive adjustements to the system (if required):
+    This script will perform the following non-destructive adjustments to the system (if required):
         - Install package provider NuGet
         - Install/update Powershell modules"
 if ($IsWindows) {
@@ -89,6 +89,28 @@ $modules = @{
         IsCoreCLR = $false;
         AllowClobber = $false;
         SkipPublisherCheck = $true;
+    };
+
+    "PSScriptAnalyzer" = @{
+        Info = "static code checker for PowerShell modules and scripts";
+        Repo = "https://github.com/PowerShell/PSScriptAnalyzer";
+        Install = $true;
+        Force = $true;
+        Prerelease = $false;
+        IsCoreCLR = $false;
+        AllowClobber = $false;
+        SkipPublisherCheck = $false;
+    };
+
+    "Invoke-CommandAs" = @{
+        Info = "Invoke Command as System/User on Local/Remote computer using ScheduleTask";
+        Repo = "https://github.com/mkellerman/Invoke-CommandAs";
+        Install = $true;
+        Force = $true;
+        Prerelease = $false;
+        IsCoreCLR = $false;
+        AllowClobber = $false;
+        SkipPublisherCheck = $false;
     };
 }
 
@@ -150,6 +172,7 @@ if ($IsWindows) {
             "gh",
             "git",
             "innounp",
+            "jq",
             "less",
             "lessmsi",
             "neofetch",
