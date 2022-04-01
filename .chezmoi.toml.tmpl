@@ -43,8 +43,8 @@ pager = "less"
     name = {{ $name | quote }}
     gpgkey = {{ $gpgkey | quote }}
 
-#[diff]
-#    exclude = ["scripts"]
+[diff]
+    exclude = ["scripts"]
 
 [gpg]
     recipient = {{ $gpgkey | quote }}
@@ -55,5 +55,5 @@ pager = "less"
     command = "op.exe"
     prompt = true
 
-#[status]
-#    exclude = ["scripts"]
+[status]
+    exclude = ["scripts"]
