@@ -26,6 +26,7 @@ if (Test-Path "$env:AppData\gnupg") {
     [System.Environment]::SetEnvironmentVariable('GNUPGHOME', $env:GNUPGHOME)
 }
 
+
 # Add missing user paths.
 # if (Get-Command Add-EnvPath -errorAction Ignore) {
 #     if ($IsWindows) {
@@ -37,9 +38,19 @@ if (Test-Path "$env:AppData\gnupg") {
 #     }
 # }
 
+# Load chezmoi completion from separate configuration file.
+if (Test-Path $ProfilePath/chezmoi-completion.ps1) {
+    . $ProfilePath/chezmoi-completion.ps1
+}
+
 # Load alias definitions from separate configuration file.
 if (Test-Path $ProfilePath/aliases.ps1) {
     . $ProfilePath/aliases.ps1
+}
+
+# Configure editor for various tasks
+if (Get-Command "nvim" -ErrorAction "Ignore") {
+    $env:EDITOR = "nvim"
 }
 
 $env:STARSHIP_CONFIG = "$HOME\.starship\config.toml"

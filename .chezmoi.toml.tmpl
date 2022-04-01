@@ -1,4 +1,5 @@
 # -*-mode:toml-*- vim:ft=toml
+# -*-mode:go-template-*- vim:ft=toml
 
 # ~/.local/share/chezmoi/.chezmoi.toml.tmpl
 # =============================================================================
@@ -11,22 +12,48 @@
 #
 # {{- /* This file supports Go's text/template language. */}}
 
-# {{- $email := promptString "Git email address for the author/committer" }}
-# {{- $name := promptString "Git username for the author/committer" }}
-# {{- $gpgkey := promptString "GPG key in 0x format for chezmoi encryption and git signing" }}
+# {{- $name := "" -}}
+# {{- if hasKey . "name" -}}
+# {{-   $name = .name -}}
+# {{- else -}}
+# {{-   $name := promptString "Git name for the author/committer" }}
+# {{- end -}}
 
-[data]
-    email = "{{ $email }}"
-    name = "{{ $name }}"
-    gpgkey = "{{ $gpgkey }}"
+# {{- $email := "" -}}
+# {{- if hasKey . "email" -}}
+# {{-   $email = .email -}}
+# {{- else -}}
+# {{-   $email := promptString "Git email address for the author/committer" }}
+# {{- end -}}
+
+# {{- $gpgkey := "" -}}
+# {{- if hasKey . "gpgkey" -}}
+# {{-   $gpgkey = .gpgkey -}}
+# {{- else -}}
+# {{-   $gpgkey := promptString "GPG key in 0x format for chezmoi encryption and git signing" }}
+# {{- end -}}
 
 encryption = "gpg"
 format = "json"
 color = "on"
+pager = "less"
 
-[gpg]
-    recipient = "{{ $gpgkey }}"
-    suffix = ".asc"
+[data]
+    email = {{ $email | quote }}
+    name = {{ $name | quote }}
+    gpgkey = {{ $gpgkey | quote }}
 
 [diff]
+    exclude = ["scripts"]
+
+[gpg]
+    recipient = {{ $gpgkey | quote }}
+    suffix = ".asc"
+
+[onepassword]
+    cache = true
+    command = "op.exe"
+    prompt = true
+
+[status]
     exclude = ["scripts"]
