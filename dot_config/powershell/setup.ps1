@@ -36,6 +36,7 @@ function eos {
     #>
     if ($count) {
         Write-Host "Done! $count modification(s) applied." -ForegroundColor $ColorInfo
+        Write-Host "You need to restart your terminal for these changes to take effect."
     }
     else {
         Write-Host "No modifications performed." -ForegroundColor $ColorInfo
@@ -180,7 +181,6 @@ if ($IsWindows) {
             "nerd-fonts/CascadiaCode-NF",
             "nodejs-lts",
             "putty",
-            "python",
             "ripgrep",
             "starship",
             "wget"
@@ -197,14 +197,37 @@ if ($IsWindows) {
 
 
 #
+# Additional software
+#
+
+if ($IsWindows) {
+    if (!Get-Command "pyenv" -ErrorAction "Ignore") {
+        Write-Host "Installing pyenv and Python versions..." -ForegroundColor $ColorInfo
+        git clone --quiet https://github.com/pyenv-win/pyenv-win.git "$HOME/.pyenv"
+        $env:PYENV = $env:USERPROFILE + "\.pyenv\pyenv-win\"
+        $env:PYENV_HOME = $env:PYENV
+        $env:PYENV_ROOT = $env:PYENV
+        [System.Environment]::SetEnvironmentVariable("PYENV", $env:PYENV, "User")
+        [System.Environment]::SetEnvironmentVariable("PYENV_ROOT", $env:PYENV_ROOT, "User")
+        [System.Environment]::SetEnvironmentVariable("PYENV_HOME", $env:PYENV_HOME, "User")
+        [System.Environment]::SetEnvironmentVariable("path", $env:PYENV_ROOT + "\bin;" + $env:PYENV_ROOT + "\shims;" + [System.Environment]::GetEnvironmentVariable("path", "User"), "User")
+        $count++
+        Invoke-Expression -Command ($env:PYENV_ROOT + "\bin\pyenv.ps1") install 3.9.6
+        $count++
+        Invoke-Expression -Command ($env:PYENV_ROOT + "\bin\pyenv.ps1") install 2.7.6
+        $count++
+    }
+}
+
+#
 # System tweaks
 #
 
 # Enable LongPaths support for file paths above 260 characters.
 # See https://social.msdn.microsoft.com/Forums/en-US/fc85630e-5684-4df6-ad2f-5a128de3deef
 if ($IsWindows) {
-    $property = 'HKLM:\SYSTEM\CurrentControlSet\Control\FileSystem'
-    $name = 'LongPathsEnabled'
+    $property = "HKLM:\SYSTEM\CurrentControlSet\Control\FileSystem"
+    $name = "LongPathsEnabled"
     if ((Get-ItemPropertyValue $property -Name $name) -ne 0) {
         Write-Host "LongPaths support already enabled, skipping." -ForegroundColor $ColorInfo
     }
