@@ -1,16 +1,28 @@
 # Move the directory to the second line
 format = "$all"
+scan_timeout = 50
 
 [battery]
 full_symbol = "🔋 "
-charging_symbol = "⚡️ "
+charging_symbol = " "
 discharging_symbol = " "
+unknown_symbol = " "
+empty_symbol = " "
+format = "[$symbol$percentage]($style) "
+
+[[battery.display]]
+threshold = 20
+style = "bold red"
 
 [[battery.display]]
 threshold = 40
-style = "bold red"
+style = "bold yellow"
 
-[git_metrics]
+[[battery.display]]
+threshold = 75
+style = "bold green"
+
+[localip]
+ssh_only = true
+format = "@[$localipv4](bold red) "
 disabled = false
-added_style = "bold blue"
-format = '[+$added]($added_style)/[-$deleted]($deleted_style) '
