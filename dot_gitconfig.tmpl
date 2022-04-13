@@ -20,6 +20,9 @@
 [core]
     sshcommand = "plink -agent"
 
+[gc]
+    auto = 256
+
 [user]
     name = {{ .name | quote }}
     email = {{ .email | quote }}

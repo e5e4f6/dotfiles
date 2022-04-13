@@ -46,6 +46,6 @@ if (Test-Path $ProfilePath\gpg.ps1) {
     . $ProfilePath\gpg.ps1
 }
 
-$env:STARSHIP_CONFIG = "$HOME\.starship\config.toml"
+$env:STARSHIP_CONFIG = "$HOME\.config\starship.toml"
 
 Invoke-Expression (&starship init powershell)
