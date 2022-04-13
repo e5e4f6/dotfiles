@@ -1,5 +1,5 @@
 # Move the directory to the second line
-format = "$all"
+format = "$directory$time$all"
 scan_timeout = 50
 
 [battery]
@@ -25,4 +25,7 @@ style = "bold green"
 [localip]
 ssh_only = true
 format = "@[$localipv4](bold red) "
+disabled = false
+
+[time]
 disabled = false
