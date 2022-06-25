@@ -19,6 +19,7 @@
 
 [core]
     sshcommand = "plink -agent"
+    pager = "diff-so-fancy | less --tabs=4 -RFX"
 
 [gc]
     auto = 256
@@ -66,7 +67,9 @@
     textconv = gpg --no-tty --decrypt
 
 [gpg]
-    program = {{ output "scoop" "which" "gpg" | trim | splitList `\` | join `\\` }}
+    # {{- /* fuck this entire line of shenanigans... */ -}}
+    # expanded path to gpg.exe from scoop
+    program = "{{ mustRegexReplaceAll `\\` .chezmoi.homeDir `\\` }}{{ output "scoop" "which" "gpg" | trim | trimPrefix "~" | splitList `\` | join `\\` |  }}"
 
 [pull]
     ff = only

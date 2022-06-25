@@ -42,10 +42,6 @@ if (Get-Command "nvim" -ErrorAction "Ignore") {
     $env:VISUAL = "nvim"
 }
 
-if (Test-Path $ProfilePath\gpg.ps1) {
-    . $ProfilePath\gpg.ps1
-}
-
 $env:STARSHIP_CONFIG = "$HOME\.config\starship.toml"
 
 Invoke-Expression (&starship init powershell)
